@@ -1,0 +1,20 @@
+{
+    "PoolName": "__YOUR_POOL_NAME__",
+
+    "AliasAttributes": ["phone_number", "email", "preferred_username"],
+
+    "AdminCreateUserConfig": {
+        "AllowAdminCreateUserOnly": true
+    },
+    "Policies": {
+        "PasswordPolicy": {
+            "MinimumLength": 8,
+            "RequireNumbers": false,
+            "RequireSymbols": false,
+            "RequireUppercase": false,
+            "RequireLowercase": false,
+            "TemporaryPasswordValidityDays": 1
+        }
+    },
+    "AutoVerifiedAttributes": ["email"]
+}

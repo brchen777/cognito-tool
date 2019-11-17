@@ -1,0 +1,24 @@
+{
+    "name": "cognito",
+    "version": "1.0.0",
+    "description": "",
+    "main": "index.js",
+    "scripts": {
+        "create-user-pool": "node create-user-pool.js",
+        "create-user-pool-inspect": "node --inspect-brk=7777 create-user-pool.js",
+        "test": "echo \"Error: no test specified\" && exit 1"
+    },
+    "author": "",
+    "license": "ISC",
+    "dependencies": {
+        "aws-sdk": "^2.573.0"
+    },
+    "devDependencies": {
+        "eslint": "^6.1.0",
+        "eslint-config-airbnb-base": "^14.0.0",
+        "eslint-config-prettier": "^6.5.0",
+        "eslint-plugin-import": "^2.18.2",
+        "eslint-plugin-prettier": "^3.1.1",
+        "prettier": "^1.19.1"
+    }
+}

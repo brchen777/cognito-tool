@@ -1,0 +1,8 @@
+{
+    "UserPoolId": "__YOUR_POOL_ID__",
+
+    "ClientName": "app01",
+    "GenerateSecret": true,
+    "ExplicitAuthFlows": ["ALLOW_CUSTOM_AUTH", "ALLOW_USER_SRP_AUTH", "ALLOW_REFRESH_TOKEN_AUTH"],
+    "PreventUserExistenceErrors": "LEGACY"
+}
