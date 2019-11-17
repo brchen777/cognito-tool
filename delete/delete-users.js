@@ -25,7 +25,7 @@
     const cognito = new AWS.CognitoIdentityServiceProvider(AWS.config.credentials);
 
     // Load config
-    console.log('\n========== Load config ==========');
+    console.log('\n========== Prepare something ==========');
     let configMode = 'default';
     let configParams = require(`./${__PATH__.defaultFile}`);
     try {
@@ -34,8 +34,8 @@
     } catch (err) {}
     console.log(`Load ${configMode} config`);
 
-    // Delete users
-    console.log('\n========== Delete users start ==========');
+    // Get user list
+    console.log('Get user list');
     const { UserPoolId: userPoolId, WhiteListUserIds: whiteList = [] } = configParams;
     const users = await cognito
         .listUsers({ UserPoolId: userPoolId })
@@ -46,9 +46,17 @@
         .catch(err => {
             console.log(err);
         });
-    let deleteCnt = 0;
-    for (let { Username: userName } of users) {
-        if (whiteList.includes(userName)) continue;
+
+    // Delete users
+    console.log('\n========== Delete users start ==========');
+    let whiteListMatchCnt = 0;
+    let deleteSuccessCnt = 0;
+    let deleteFailedCnt = 0;
+    for (const { Username: userName } of users) {
+        if (whiteList.includes(userName)) {
+            whiteListMatchCnt++;
+            continue;
+        }
 
         await cognito
             .adminDeleteUser({
@@ -56,15 +64,22 @@
                 Username: userName
             })
             .promise()
-            .then(data => {
+            .then(() => {
                 console.log(`User ${userName} delete finish`);
-                deleteCnt++;
+                deleteSuccessCnt++;
             })
             .catch(err => {
-                console.log(err);
+                console.error(err);
+                deleteFailedCnt++;
             });
     }
     console.log('========== Delete users end ==========');
-    console.log(`Delete total ${deleteCnt} users`);
-    console.log(`Whitelist ${whiteList.length} users`);
+
+    // Show results
+    console.log('\n========== Report ==========');
+    console.log(`Whitelist count: ${whiteList.length}`);
+    console.log(`Whitelist match count: ${whiteListMatchCnt}`);
+    console.log(`Total in user list: ${users.length}`);
+    console.log(`Delete success count: ${deleteSuccessCnt}`);
+    console.log(`Delete failed count: ${deleteFailedCnt}`);
 })();
