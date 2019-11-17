@@ -1,0 +1,5 @@
+{
+    "UserPoolId": "__YOUR_POOL_ID__",
+
+    "WhiteListUserIds": []
+}

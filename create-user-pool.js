@@ -1,8 +1,9 @@
 (async () => {
     const AWS = require('aws-sdk');
+    const rootPath = require('app-root-path').path;
 
     const __PATH__ = {
-        config: './configs',
+        config: `${rootPath}/configs`,
         credential: 'credential',
         pool: 'user-pool',
         client: 'user-pool-client',
@@ -18,7 +19,7 @@
         console.log('========== Load credentials ==========');
         console.log(`Access key: ${AWS.config.credentials.accessKeyId}`);
         console.log(`Secret access key: ${AWS.config.credentials.secretAccessKey}`);
-        console.log(`Region: ${AWS.config.credentials.region}\n`);
+        console.log(`Region: ${AWS.config.credentials.region}`);
     } catch (err) {
         console.log('Your credentials not loaded', err);
         throw err;
@@ -26,7 +27,7 @@
     const cognito = new AWS.CognitoIdentityServiceProvider(AWS.config.credentials);
 
     // Load user pool config
-    console.log('========== Load pool and client config ==========');
+    console.log('\n========== Load pool and client config ==========');
     let poolMode = 'default';
     let poolParams = require(`${__PATH__.config}/${__PATH__.pool}/${__PATH__.defaultFile}`);
     try {
@@ -42,17 +43,17 @@
         clientParams = require(`${__PATH__.config}/${__PATH__.client}/${__PATH__.productionFile}`);
         clientMode = 'production';
     } catch (err) {}
-    console.log(`Client load ${clientMode} config\n`);
+    console.log(`Client load ${clientMode} config`);
 
     // Create user pool
-    console.log('========== Result ==========');
+    console.log('\n========== Result ==========');
     console.log(`Pool name: ${poolParams.PoolName}`);
     const userPoolId = await cognito
         .createUserPool(poolParams)
         .promise()
-        .then(response => {
-            console.log(`Pool Id: ${response.UserPool.Id}`);
-            return response.UserPool.Id;
+        .then(data => {
+            console.log(`Pool Id: ${data.UserPool.Id}`);
+            return data.UserPool.Id;
         })
         .catch(err => {
             console.log(err, err.stack);
@@ -63,9 +64,9 @@
     await cognito
         .createUserPoolClient(clientParams)
         .promise()
-        .then(response => {
-            console.log(`App client id: ${response.UserPoolClient.ClientId}`);
-            console.log(`App client secret: ${response.UserPoolClient.ClientSecret}`);
+        .then(data => {
+            console.log(`App client id: ${data.UserPoolClient.ClientId}`);
+            console.log(`App client secret: ${data.UserPoolClient.ClientSecret}`);
         })
         .catch(err => {
             console.log(err, err.stack);

@@ -6,11 +6,14 @@
     "scripts": {
         "create-user-pool": "node create-user-pool.js",
         "create-user-pool-inspect": "node --inspect-brk=7777 create-user-pool.js",
+        "delete-users": "node ./delete/delete-users.js",
+        "delete-users-inspect": "node --inspect-brk=7777 ./delete/delete-users.js",
         "test": "echo \"Error: no test specified\" && exit 1"
     },
     "author": "",
     "license": "ISC",
     "dependencies": {
+        "app-root-path": "^3.0.0",
         "aws-sdk": "^2.573.0"
     },
     "devDependencies": {
